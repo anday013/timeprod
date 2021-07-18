@@ -9,9 +9,12 @@ import SwiftUI
 
 @main
 struct TimePadApp: App {
+    @StateObject var viewRouter:BottomBarRouter = BottomBarRouter()
     var body: some Scene {
         WindowGroup {
             ContentView()
+                .environmentObject(viewRouter)
+                
         }
     }
 }

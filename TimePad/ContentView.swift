@@ -8,14 +8,29 @@
 import SwiftUI
 
 struct ContentView: View {
+    @EnvironmentObject var viewRouter: BottomBarRouter
     var body: some View {
-        Text("Hello, world!")
-            .padding()
+        VStack{
+            Spacer()
+            switch viewRouter.currentPage {
+            case .tasks:
+                Tasks()
+            case .add:
+                Text("Add")
+            case .stats:
+                Text("Stats")
+            
+            }
+            Spacer()
+            BottomBarView()
+        }
+        
     }
 }
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
         ContentView()
+            .environmentObject(BottomBarRouter())
     }
 }
