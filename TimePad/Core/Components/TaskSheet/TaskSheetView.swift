@@ -6,10 +6,24 @@
 //
 
 import SwiftUI
+import Combine
 
 struct TaskSheetView: View {
-    var task: Task
-    @State private var progressValue: Float = 0.6
+    var task: Task?
+    
+    @EnvironmentObject var tasksVM: TasksEnvironmentViewModel
+    private var progressValue: Float = 0.0
+    private var clockTime: String = formatTime(durationSeconds: 0)
+    
+    init(task: Task?) {
+        print("INIT: Sheet")
+        self.task = task
+        self.clockTime = computeClockValue()
+        self.progressValue = computeProgressValue()
+        print("ClockTime: \(self.clockTime)")
+        print("ProgressValue: \(self.progressValue)")
+    }
+    
     var body: some View {
         VStack {
             RoundedRectangle(cornerRadius: 8)
@@ -18,13 +32,13 @@ struct TaskSheetView: View {
                 .padding()
             
             HStack(alignment: .top) {
-                Text(task.title)
+                Text(task?.title ?? "")
                     .bold()
                     .font(.title)
                 Spacer()
-                
+
                 VStack {
-                    ForEach(task.tags ?? []) { tag in
+                    ForEach(task?.tags ?? []) { tag in
                         TagView(tag: tag)
                     }
                 }
@@ -32,45 +46,53 @@ struct TaskSheetView: View {
             .padding(8)
             Spacer()
             
-            
-            
-            ProgressBarView(progress: $progressValue)
+
+
+            ProgressBarView(progress: progressValue)
                 .overlay(
-                    Text(formatTime(hours: task.durationHours, minutes: task.durationMinutes, seconds: task.durationSeconds))
-                            .font(Font.system(size: 40, weight: .bold, design: .default))
+                    Text(clockTime)
+                        .font(Font.system(size: Size.computeWidth(40), weight: .bold, design: .default))
                 )
-            
             Spacer()
-            
+
             HStack(spacing: Size.computeWidth(95)) {
-                CircleButtonView(action: {}, label: "Pause") {
-                    Image(systemName: "pause.fill")
+                CircleButtonView(action: {
+                    if(tasksVM.activeTask?.id == task?.id){
+                        tasksVM.activeTask = nil
+                    }
+                    else {
+                        tasksVM.activeTask = task
+                    }
+                 }, label: tasksVM.activeTask?.id == task?.id ? "Pause" : "Start") {
+                    Image(systemName: tasksVM.activeTask?.id == task?.id ? "pause.fill" : "play.fill")
                 }
-                
-                CircleButtonView(action: {}, label: "Done") {
+
+                CircleButtonView(action: {
+
+                }, label: "Done") {
                     Image(systemName: "checkmark.circle.fill")
                 }
-//
-
             }
-            
+
             Spacer()
-//            MainButtonView(action: {}, label: "Finish")
-//
-//
-//            MainButtonView(action: {}, label: "Quit", transparent: true)
-//
-            
-           
-            
-            
         }
         .padding()
+    }
+    
+    func computeClockValue() -> String {
+        guard let task = task else { return formatTime(durationSeconds: 0)}
+        print("Compute Clock Value")
+        return formatTime(durationSeconds: task.durationSeconds - task.passedSeconds)
+    }
+    
+    func computeProgressValue() -> Float {
+        guard let task = task else { return 0.0}
+        return Float(task.passedSeconds) / Float(task.durationSeconds)
     }
 }
 
 struct ProgressBarView: View {
-    @Binding var progress: Float
+    var progress: Float
     var body: some View {
         ZStack {
             Circle()
@@ -90,9 +112,10 @@ struct ProgressBarView: View {
 
 struct TaskSheetView_Previews: PreviewProvider {
     static var previews: some View {
-        TaskSheetView(task: Task(title: "Learn IOS", durationHours: 2, durationMinutes: 0, durationSeconds: 0, icon: "monitor", backgroundColor: "9B51E0", tags: [Tag(name: "Work", fontColor: "FD5B71"), Tag(name: "Coding", fontColor: "FD5B71")]))
+        TaskSheetView(task: dev.task)
+            .environmentObject(TasksEnvironmentViewModel())
         
-//        TaskSheetView(task: Task(title: "Learn IOS", durationHours: 2, durationMinutes: 0, durationSeconds: 0, icon: "monitor", backgroundColor: "9B51E0", tags: [Tag(name: "Work", fontColor: "FD5B71"), Tag(name: "Coding", fontColor: "FD5B71")]))
+//        TaskSheetView(task: dev.task, taskVM: TasksViewModel())
 //            .preferredColorScheme(.dark)
     }
 }

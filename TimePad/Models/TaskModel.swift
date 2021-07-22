@@ -10,9 +10,9 @@ import Foundation
 struct Task: Codable, Identifiable {
     var id = UUID().uuidString
     let title: String
-    let durationHours: Int
-    let durationMinutes: Int
+    let date: Date
     let durationSeconds: Int
+    var passedSeconds: Int = 0
     let icon: String
     let backgroundColor: String
     let tags: [Tag]?

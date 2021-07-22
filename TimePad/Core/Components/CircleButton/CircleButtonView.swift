@@ -14,9 +14,10 @@ struct CircleButtonView<Content: View>: View {
     
     init(
         action: @escaping () -> Void,
-         label: String?,
-         @ViewBuilder content: @escaping () -> Content
-    ) {
+        label: String?,
+        @ViewBuilder content: @escaping () -> Content
+    )
+    {
         self.action = action
         self.label = label
         self.content = content
@@ -33,7 +34,7 @@ struct CircleButtonView<Content: View>: View {
                         .foregroundColor(Color.theme.gray)
                         .font(.title2)
                 }
-                .frame(width: 60, height: 60)
+                .frame(width: Size.computeWidth(60), height: Size.computeWidth(60))
             })
             
             if(label != nil && label != ""){
@@ -46,16 +47,16 @@ struct CircleButtonView<Content: View>: View {
 struct CircleButtonView_Previews: PreviewProvider {
     static var previews: some View {
         CircleButtonView(action: {}, label: "Pause") {
-                Image(systemName: "pause.fill")
-            }
-            .previewLayout(.sizeThatFits)
-            .padding()
+            Image(systemName: "pause.fill")
+        }
+        .previewLayout(.sizeThatFits)
+        .padding()
         CircleButtonView(action: {}, label: "")  {
-                Image(systemName: "stop.fill")
-            }
-            .previewLayout(.sizeThatFits)
-            .padding()
-            .preferredColorScheme(.dark)
-            
+            Image(systemName: "stop.fill")
+        }
+        .previewLayout(.sizeThatFits)
+        .padding()
+        .preferredColorScheme(.dark)
+        
     }
 }

@@ -8,7 +8,10 @@
 import Foundation
 
 
-func formatTime(hours: Int, minutes: Int, seconds: Int) -> String {
+func formatTime(durationSeconds: Int) -> String {
+    let hours: Int = Int(durationSeconds / 3600)
+    let minutes: Int = Int(durationSeconds / 60) - hours * 60
+    let seconds: Int = durationSeconds - hours * 3600 - minutes * 60
     var formattedTime: String = ""
     formattedTime.append(hours < 10 ? "0\(hours)" : "\(hours)")
     formattedTime.append(":")

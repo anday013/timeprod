@@ -13,7 +13,7 @@ struct TaskView: View {
     
     init(task: Task) {
         self.task = task
-        formattedTime = formatTime(hours: task.durationHours, minutes: task.durationMinutes, seconds: task.durationSeconds)
+        formattedTime = formatTime(durationSeconds: task.durationSeconds - task.passedSeconds)
     }
     
     var body: some View {
@@ -50,11 +50,11 @@ struct TaskView: View {
 
 struct TaskView_Previews: PreviewProvider {
     static var previews: some View {
-        TaskView(task: Task(title: "Learn IOS", durationHours: 2, durationMinutes: 0, durationSeconds: 0, icon: "monitor", backgroundColor: "9B51E0", tags: [Tag(name: "Work", fontColor: "FD5B71"), Tag(name: "Coding", fontColor: "FD5B71")]))
+        TaskView(task: dev.task)
             .previewLayout(.sizeThatFits)
             .padding()
         
-        TaskView(task: Task(title: "Learn IOS", durationHours: 2, durationMinutes: 0, durationSeconds: 0, icon: "monitor", backgroundColor: "9B51E0", tags: [Tag(name: "Work", fontColor: "FD5B71"), Tag(name: "Coding", fontColor: "FD5B71")]))
+        TaskView(task: dev.task)
             .previewLayout(.sizeThatFits)
             .padding()
             .preferredColorScheme(.dark)
