@@ -9,37 +9,53 @@ import SwiftUI
 
 struct AddTaskScreenView: View {
     @StateObject var vm: AddTaskViewModel = AddTaskViewModel()
+    init(){
+        UITableView.appearance().backgroundColor = .clear
+    }
     var body: some View {
-        ScrollView {
-            VStack {
+        VStack {
+            Form {
                 
-                TextField("Title", text: $vm.title)
-                    .font(.title2)
-                    .padding()
-                    .background(Color.theme.accent.cornerRadius(12))
+                Section {
+                    TextField("Title", text: $vm.title)
+                        .font(.title2)
+                        .padding()
+                        .background(Color.theme.accent.cornerRadius(12))
+                        .padding(.bottom, 8)
+                    
+                    
+                    
+                    DatePicker("Date", selection: $vm.date, displayedComponents: .date)
+                        .datePickerStyle(GraphicalDatePickerStyle())
+                        .padding()
+                        .background(Color.theme.accent.cornerRadius(12))
+                        .accentColor(Color.theme.gradientPurple)
+                        
+                    
+                }
+                .listRowInsets(EdgeInsets())
+                .background(Color(UIColor.systemBackground))
+
+                
+                Section(
+                    header: Text("Duration")
+                        .bold()
+                        .font(.title3)
+                ){
+                    TimePicker(title: "Minutes", value: $vm.durationMinutes, upperBound: 60, lowerBound: 1)
+                        .padding(.bottom, 8)
+                    
+                    TimeStepper(title: "Hours", value: $vm.durationHours, upperBound: 24, lowerBound: 0)
+                    
+                    
+                    
+                }
+                .listRowInsets(EdgeInsets())
+                .background(Color(UIColor.systemBackground))
                 
                 
-                DatePicker("Date", selection: $vm.date, displayedComponents: .date)
-                    .datePickerStyle(GraphicalDatePickerStyle())
-                    .padding()
-                    .background(Color.theme.accent.cornerRadius(12))
-                    .accentColor(Color.theme.gradientPurple)
-                
-                
-                Text("Duration")
-                    .bold()
-                    .font(.title)
-                    .padding()
-                
-                TimeStepper(title: "Hours", value: $vm.durationHours, upperBound: 24, lowerBound: 0)
-                TimeStepper(title: "Minutes", value: $vm.durationMinutes, upperBound: 60, lowerBound: 0)                
-                
-                
-                
-                
-                Spacer()
-                
-            }.padding()
+            }
+            
         }
     }
 }
@@ -49,6 +65,7 @@ struct AddTask_Previews: PreviewProvider {
         NavigationView {
             AddTaskScreenView()
                 .navigationTitle("New Task 🔖")
+                .preferredColorScheme(.dark)
         }
     }
 }
@@ -87,11 +104,57 @@ struct TimeStepper: View {
                     Text("\(value)")
                         .font(.title2)
                         .padding(.horizontal)
+                        .foregroundColor(Color.theme.gradientPurple)
                 }
                 
             })
             .padding()
             .background(Color.theme.accent.cornerRadius(12))
             .accentColor(Color.theme.gradientPurple)
+    }
+}
+
+
+struct TimePicker: View {
+    var title: String
+    @Binding var value: Int
+    var upperBound: Int?
+    var lowerBound: Int?
+    
+    var body: some View {
+        Picker(selection: $value,
+               label: labelView,
+               content: {contentView}
+        )
+        .pickerStyle(MenuPickerStyle())
+        .padding()
+        .background(Color.theme.accent.cornerRadius(12))
+        .accentColor(Color.theme.gradientPurple)
+    }
+}
+
+
+extension TimePicker {
+    private var labelView: some View {
+        HStack {
+            Text(title)
+                .font(.title3)
+                .foregroundColor(.primary)
+            Spacer()
+            Text("\(value)")
+                .font(.title2)
+            
+            
+            Image(systemName: "chevron.right")
+                .font(.subheadline)
+                .foregroundColor(.primary)
+            
+        }
+    }
+    
+    private var contentView: some View {
+        ForEach((lowerBound ?? 0)...(upperBound ?? 60), id: \.self) { index in
+            Text("\(index)").tag(index)
+        }
     }
 }
