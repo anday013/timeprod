@@ -18,9 +18,7 @@ struct TaskView: View {
     
     var body: some View {
         HStack(spacing: 16) {
-            Circle()
-                .fill(Color(hex: task.backgroundColor))
-                .frame(width: 44, height: 44)
+            IconView(icon: task.icon)
             
             VStack(alignment: .leading) {
                 Text(task.title)

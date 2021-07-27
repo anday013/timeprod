@@ -24,6 +24,7 @@ struct ContentView: View {
                     Text("Stats")
                 }
             }
+            .accentColor(.primary)
             Spacer()
             BottomBarView()
         }
@@ -35,6 +36,7 @@ struct ContentView: View {
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
         ContentView()
+            .preferredColorScheme(.dark)
             .environmentObject(BottomBarRouter())
             .environmentObject(TasksEnvironmentViewModel())
     }

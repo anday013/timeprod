@@ -12,6 +12,7 @@ struct TagView: View {
     var body: some View {
         Text(tag.name)
             .font(.subheadline)
+            .lineLimit(1)
             .padding(.vertical, 5)
             .padding(.horizontal, 8)
             .foregroundColor(Color(hex: tag.fontColor))

@@ -22,5 +22,5 @@ class DeveloperPreview {
     
     private init() {}
     
-    let task = Task(title: "Learn IOS", date: Date(), durationSeconds: 3600, icon: "monitor", backgroundColor: "9B51E0", tags: [Tag(name: "Work", fontColor: "FD5B71"), Tag(name: "Coding", fontColor: "FD5B71")])
+    let task = Task(title: "Learn IOS", date: Date(), durationSeconds: 3600, icon: Icon(imageName: "monitor", backgroundColor: "9B51E0"), tags: [Tag(name: "Work", fontColor: "FD5B71"), Tag(name: "Coding", fontColor: "FD5B71")])
 }

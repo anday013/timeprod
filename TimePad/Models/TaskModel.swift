@@ -13,7 +13,6 @@ struct Task: Codable, Identifiable {
     let date: Date
     let durationSeconds: Int
     var passedSeconds: Int = 0
-    let icon: String
-    let backgroundColor: String
+    let icon: Icon
     let tags: [Tag]?
 }

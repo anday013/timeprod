@@ -6,11 +6,23 @@
 //
 
 import SwiftUI
+import BottomSheet
 
 struct AddTaskScreenView: View {
     @StateObject var vm: AddTaskViewModel = AddTaskViewModel()
+    @EnvironmentObject var tasksVM: TasksEnvironmentViewModel
+    @State var color: Color = .green
+    var columns: [GridItem] = [
+        GridItem(.fixed(Size.computeWidth(50))),
+        GridItem(.fixed(Size.computeWidth(50))),
+        GridItem(.fixed(Size.computeWidth(50)))
+    ]
+    
     init(){
         UITableView.appearance().backgroundColor = .clear
+        for _ in 1...(Int(UIScreen.main.bounds.width / Size.computeWidth(50))-4){
+            columns.append(GridItem(.fixed(Size.computeWidth(50))))
+        }
     }
     var body: some View {
         VStack {
@@ -25,27 +37,27 @@ struct AddTaskScreenView: View {
                     
                     
                     
-                    DatePicker("Date", selection: $vm.date, displayedComponents: .date)
+                    DatePicker("Date", selection: $vm.date, in: Date()..., displayedComponents: .date)
                         .datePickerStyle(GraphicalDatePickerStyle())
                         .padding()
                         .background(Color.theme.accent.cornerRadius(12))
                         .accentColor(Color.theme.gradientPurple)
-                        
+                    
                     
                 }
                 .listRowInsets(EdgeInsets())
                 .background(Color(UIColor.systemBackground))
-
+                
                 
                 Section(
                     header: Text("Duration")
                         .bold()
                         .font(.title3)
                 ){
-                    TimePicker(title: "Minutes", value: $vm.durationMinutes, upperBound: 60, lowerBound: 1)
+                    TimePickerView(title: "Minutes", value: $vm.durationMinutes, lowerBound: 1, upperBound: 60)
                         .padding(.bottom, 8)
                     
-                    TimeStepper(title: "Hours", value: $vm.durationHours, upperBound: 24, lowerBound: 0)
+                    TimeStepperView(title: "Hours", value: $vm.durationHours, lowerBound: 0, upperBound: 24)
                     
                     
                     
@@ -54,107 +66,149 @@ struct AddTaskScreenView: View {
                 .background(Color(UIColor.systemBackground))
                 
                 
+                
+                
+                Section(
+                    header: Text("Description")
+                        .bold()
+                        .font(.title3)
+                ){
+                    
+                    Button(action: {
+                        vm.showIconPicker.toggle()
+                    }, label: {
+                        HStack {
+                            Text("Icon")
+                                .font(.title2)
+                            Spacer()
+                            IconView(icon: vm.selectedIcon)
+                            Image(systemName: "chevron.right")
+                                .font(.caption)
+                                .foregroundColor(.primary)
+                        }
+                    })
+                    .padding()
+                    .background(Color.theme.accent.cornerRadius(12))
+                    .foregroundColor(Color.primary)
+                    .padding(.bottom, 8)
+                    
+                    NavigationLink(
+                        destination: MultipleSelectionList(items: $tasksVM.tags, selections: $vm.selectedTags, limit: 2),
+                        label: {
+                            HStack {
+                                Text("Tags")
+                                Spacer()
+                                ForEach(vm.selectedTags, id: \.id) { tag in
+                                    TagView(tag: tag)
+                                }
+                            }
+                        }
+                    )
+                    .font(.title2)
+                    .padding()
+                    .background(Color.theme.accent.cornerRadius(12))
+                    .padding(.bottom, 8)
+                }
+                .listRowInsets(EdgeInsets())
+                .background(Color(UIColor.systemBackground))
+                
+                
+                
+                Section {
+                    MainButtonView(action: {
+                        tasksVM.addTask(vm.generateTaks())
+                    }, label: "Create")
+                }
+                
             }
-            
+            .bottomSheet(isPresented: $vm.showIconPicker, height: UIScreen.main.bounds.height / 2) {
+                VStack {
+                    Text("Choose an icon...")
+                        .bold()
+                        .font(.title2)
+                    LazyVGrid(columns: columns, content: {
+                        ForEach(tasksVM.icons, id: \.id) { icon in
+                            Button(action: {
+                                vm.selectedIcon = icon
+                                vm.showIconPicker.toggle()
+                            }, label: {
+                                IconView(icon: icon)
+                            })
+                        }
+                    })
+                    
+                    Spacer()
+                }
+                
+            }
         }
     }
 }
 
 struct AddTask_Previews: PreviewProvider {
     static var previews: some View {
-        NavigationView {
-            AddTaskScreenView()
-                .navigationTitle("New Task 🔖")
-                .preferredColorScheme(.dark)
-        }
+        Group {
+            NavigationView {
+                AddTaskScreenView()
+                    .navigationTitle("New Task 🔖")
+            }
+            
+            NavigationView {
+                AddTaskScreenView()
+                    .navigationTitle("New Task 🔖")
+                    .preferredColorScheme(.dark)
+            }
+        }.environmentObject(TasksEnvironmentViewModel())
     }
 }
 
 
-struct TimeStepper: View {
-    var title: String
-    @Binding var value: Int
-    var upperBound: Int?
-    var lowerBound: Int?
+
+struct MultipleSelectionList: View {
+    @Binding var items: [Tag]
+    @Binding var selections: [Tag]
+    var limit: Int
+    
     var body: some View {
-        Stepper(
-            onIncrement: {
-                guard let upperBound = upperBound else {
-                    value += 1
-                    return
+        List {
+            ForEach(self.items, id: \.id) { item in
+                MultipleSelectionRow(tag: item, isSelected: isSelectedTag(selectedTags: self.selections, tag: item)) {
+                    if isSelectedTag(selectedTags: self.selections, tag: item) {
+                        self.selections.removeAll(where: { $0.id == item.id })
+                    }
+                    else if(self.selections.count < limit){
+                        self.selections.append(item)
+                    }
+                    else {
+                        return
+                    }
                 }
-                if(value < upperBound){
-                    value += 1
-                }
-            },
-            onDecrement: {
-                guard let lowerBound = lowerBound else {
-                    value -= 1
-                    return
-                }
-                if(value > lowerBound){
-                    value -= 1
-                }
-            },
-            label: {
-                HStack {
-                    Text(title)
-                        .font(.title3)
+            }
+        }
+    }
+    
+    func isSelectedTag(selectedTags: [Tag], tag: Tag) -> Bool {
+        return selectedTags.contains { tagItem in
+            return (tagItem.id == tag.id)
+        }
+    }
+}
+
+struct MultipleSelectionRow: View {
+    var tag: Tag
+    var isSelected: Bool
+    var action: () -> Void
+    
+    var body: some View {
+        Button(action: self.action) {
+            HStack {
+                TagView(tag: tag)
+                if self.isSelected {
                     Spacer()
-                    Text("\(value)")
-                        .font(.title2)
-                        .padding(.horizontal)
-                        .foregroundColor(Color.theme.gradientPurple)
+                    Image(systemName: "checkmark")
                 }
-                
-            })
-            .padding()
-            .background(Color.theme.accent.cornerRadius(12))
-            .accentColor(Color.theme.gradientPurple)
-    }
-}
-
-
-struct TimePicker: View {
-    var title: String
-    @Binding var value: Int
-    var upperBound: Int?
-    var lowerBound: Int?
-    
-    var body: some View {
-        Picker(selection: $value,
-               label: labelView,
-               content: {contentView}
-        )
-        .pickerStyle(MenuPickerStyle())
-        .padding()
-        .background(Color.theme.accent.cornerRadius(12))
-        .accentColor(Color.theme.gradientPurple)
-    }
-}
-
-
-extension TimePicker {
-    private var labelView: some View {
-        HStack {
-            Text(title)
-                .font(.title3)
-                .foregroundColor(.primary)
-            Spacer()
-            Text("\(value)")
-                .font(.title2)
-            
-            
-            Image(systemName: "chevron.right")
-                .font(.subheadline)
-                .foregroundColor(.primary)
-            
-        }
-    }
-    
-    private var contentView: some View {
-        ForEach((lowerBound ?? 0)...(upperBound ?? 60), id: \.self) { index in
-            Text("\(index)").tag(index)
+            }
         }
     }
 }
+

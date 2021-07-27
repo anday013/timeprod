@@ -9,7 +9,7 @@ import SwiftUI
 
 struct TasksScreenView: View {
     @EnvironmentObject var tasksVM: TasksEnvironmentViewModel
-    
+
     init(){
         print("INIT: Tasks")
     }
@@ -76,7 +76,7 @@ extension TasksScreenView {
     }
     
     private var taskList: some View {
-        ScrollView {
+        ScrollView(showsIndicators: false) {
             ForEach(tasksVM.tasks) { task in
                 Button(action: {
                     setSelectedTask(task: task)

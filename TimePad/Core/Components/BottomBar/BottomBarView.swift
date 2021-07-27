@@ -16,7 +16,7 @@ struct BottomBarView: View {
         VStack {
             HStack {
                 BarIcon(name: "tasks_icon", size: iconSize)
-                    .foregroundColor(viewRouter.currentPage == .tasks ? .black : .gray)
+                    .foregroundColor(viewRouter.currentPage == .tasks ? .primary : .gray)
                     .onTapGesture {
                         viewRouter.currentPage = .tasks
                     }
@@ -24,7 +24,7 @@ struct BottomBarView: View {
                 Spacer()
                 
                 BarIcon(name: "plus_icon", size: plusSize)
-                    .foregroundColor(.white)
+                    .foregroundColor(Color(UIColor.systemBackground))
                     .background(
                        plusCircle
                     )
@@ -35,7 +35,7 @@ struct BottomBarView: View {
                 Spacer()
                 
                 BarIcon(name: "stats_icon", size: iconSize)
-                    .foregroundColor(viewRouter.currentPage == .stats ? .black : .gray)
+                    .foregroundColor(viewRouter.currentPage == .stats ? .primary : .gray)
                     .onTapGesture {
                         viewRouter.currentPage = .stats
                     }
@@ -51,7 +51,15 @@ struct BottomBarView: View {
 struct BottomBarView_Previews: PreviewProvider {
     static var previews: some View {
         BottomBarView()
+            .previewLayout(.sizeThatFits)
+            .padding()
             .environmentObject(BottomBarRouter())
+        
+        BottomBarView()
+            .previewLayout(.sizeThatFits)
+            .padding()
+            .environmentObject(BottomBarRouter())
+            .preferredColorScheme(.dark)
     }
 }
 
