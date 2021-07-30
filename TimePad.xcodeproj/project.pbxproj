@@ -11,6 +11,7 @@
 		2C0B76E126A425D900FA7CF2 /* PreviewProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C0B76E026A425D900FA7CF2 /* PreviewProvider.swift */; };
 		2C345D4426AADFB400C41D9B /* TimePickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C345D4326AADFB400C41D9B /* TimePickerView.swift */; };
 		2C345D4626AADFC800C41D9B /* TimeStepperView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C345D4526AADFC800C41D9B /* TimeStepperView.swift */; };
+		2C59597826B2950E00B2922C /* CircularMinutePickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C59597726B2950E00B2922C /* CircularMinutePickerView.swift */; };
 		2C65801B26A9AC23006D4055 /* AddTaskScreenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C65801A26A9AC23006D4055 /* AddTaskScreenView.swift */; };
 		2C65801D26A9C842006D4055 /* AddTaskViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C65801C26A9C842006D4055 /* AddTaskViewModel.swift */; };
 		2C66BA93269590B700A188E0 /* TimePadApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C66BA92269590B700A188E0 /* TimePadApp.swift */; };
@@ -21,7 +22,6 @@
 		2C66BAAA2695963E00A188E0 /* Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C66BAA92695963E00A188E0 /* Color.swift */; };
 		2C85ECFE26A03905002CC21A /* TaskView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C85ECFD26A03905002CC21A /* TaskView.swift */; };
 		2CB4D2CC26AFE45A0040851C /* SwiftUICharts in Frameworks */ = {isa = PBXBuildFile; productRef = 2CB4D2CB26AFE45A0040851C /* SwiftUICharts */; };
-		2CB4D2CE26AFE6EE0040851C /* Font.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CB4D2CD26AFE6EE0040851C /* Font.swift */; };
 		2CB7234326AF4F0700EA5C6F /* BottomSheet in Frameworks */ = {isa = PBXBuildFile; productRef = 2CB7234226AF4F0700EA5C6F /* BottomSheet */; };
 		2CB7234526AF5EA000EA5C6F /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CB7234426AF5EA000EA5C6F /* Constants.swift */; };
 		2CD58C6326A33C2500803BAF /* CurrentTaskView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CD58C6226A33C2500803BAF /* CurrentTaskView.swift */; };
@@ -44,6 +44,7 @@
 		2C0B76E026A425D900FA7CF2 /* PreviewProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviewProvider.swift; sourceTree = "<group>"; };
 		2C345D4326AADFB400C41D9B /* TimePickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimePickerView.swift; sourceTree = "<group>"; };
 		2C345D4526AADFC800C41D9B /* TimeStepperView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeStepperView.swift; sourceTree = "<group>"; };
+		2C59597726B2950E00B2922C /* CircularMinutePickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CircularMinutePickerView.swift; sourceTree = "<group>"; };
 		2C65801A26A9AC23006D4055 /* AddTaskScreenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddTaskScreenView.swift; sourceTree = "<group>"; };
 		2C65801C26A9C842006D4055 /* AddTaskViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddTaskViewModel.swift; sourceTree = "<group>"; };
 		2C66BA8F269590B700A188E0 /* TimePad.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TimePad.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -55,7 +56,6 @@
 		2C66BAA62695920200A188E0 /* TasksScreenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TasksScreenView.swift; sourceTree = "<group>"; };
 		2C66BAA92695963E00A188E0 /* Color.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Color.swift; sourceTree = "<group>"; };
 		2C85ECFD26A03905002CC21A /* TaskView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskView.swift; sourceTree = "<group>"; };
-		2CB4D2CD26AFE6EE0040851C /* Font.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Font.swift; sourceTree = "<group>"; };
 		2CB7234426AF5EA000EA5C6F /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		2CD58C6226A33C2500803BAF /* CurrentTaskView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentTaskView.swift; sourceTree = "<group>"; };
 		2CD58C6526A33F4100803BAF /* TaskSheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskSheetView.swift; sourceTree = "<group>"; };
@@ -88,6 +88,7 @@
 		2C345D4026AADF7F00C41D9B /* Inputs */ = {
 			isa = PBXGroup;
 			children = (
+				2C59597626B294B600B2922C /* CircularMinutePicker */,
 				2C345D4226AADFA700C41D9B /* TimePicker */,
 				2C345D4126AADF9500C41D9B /* TimeStepper */,
 			);
@@ -108,6 +109,14 @@
 				2C345D4326AADFB400C41D9B /* TimePickerView.swift */,
 			);
 			path = TimePicker;
+			sourceTree = "<group>";
+		};
+		2C59597626B294B600B2922C /* CircularMinutePicker */ = {
+			isa = PBXGroup;
+			children = (
+				2C59597726B2950E00B2922C /* CircularMinutePickerView.swift */,
+			);
+			path = CircularMinutePicker;
 			sourceTree = "<group>";
 		};
 		2C66BA86269590B600A188E0 = {
@@ -208,7 +217,6 @@
 			children = (
 				2C66BAA92695963E00A188E0 /* Color.swift */,
 				2C0B76E026A425D900FA7CF2 /* PreviewProvider.swift */,
-				2CB4D2CD26AFE6EE0040851C /* Font.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -391,6 +399,7 @@
 				2C345D4626AADFC800C41D9B /* TimeStepperView.swift in Sources */,
 				2C66BA95269590B700A188E0 /* ContentView.swift in Sources */,
 				2CD58C6626A33F4100803BAF /* TaskSheetView.swift in Sources */,
+				2C59597826B2950E00B2922C /* CircularMinutePickerView.swift in Sources */,
 				2CE84AC626960E2F00F552E0 /* TasksEnvironmentViewModel.swift in Sources */,
 				2CE84AC926961FE900F552E0 /* BottomBarView.swift in Sources */,
 				2CF17DCA26AD5C1500F30C72 /* IconModel.swift in Sources */,
@@ -402,7 +411,6 @@
 				2C0B76E126A425D900FA7CF2 /* PreviewProvider.swift in Sources */,
 				2C65801D26A9C842006D4055 /* AddTaskViewModel.swift in Sources */,
 				2CD58C6826A3406600803BAF /* TimeHelper.swift in Sources */,
-				2CB4D2CE26AFE6EE0040851C /* Font.swift in Sources */,
 				2C66BA93269590B700A188E0 /* TimePadApp.swift in Sources */,
 				2C65801B26A9AC23006D4055 /* AddTaskScreenView.swift in Sources */,
 				2C85ECFE26A03905002CC21A /* TaskView.swift in Sources */,

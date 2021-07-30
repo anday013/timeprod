@@ -22,6 +22,7 @@ struct TaskView: View {
             
             VStack(alignment: .leading) {
                 Text(task.title)
+                    .bold()
                     .font(.headline)
                     .lineLimit(1)
                 HStack {

@@ -35,17 +35,7 @@ class TasksEnvironmentViewModel: ObservableObject {
         
         tasks = [
             Task(title: "Learn IOS", date: Date(), durationSeconds: 7200, icon: icons[0], tags: [tags[0], tags[1]]),
-            Task(title: "Read 10 pages of book", date: Date(), durationSeconds: 3600, icon: icons[1], tags: [tags[3]]),
-            
-            Task(title: "Read 10 pages of book", date: Date(), durationSeconds: 3600, icon: icons[1], tags: [tags[3]]),
-            Task(title: "Read 10 pages of book", date: Date(), durationSeconds: 3600, icon: icons[1], tags: [tags[3]]),
-            Task(title: "Read 10 pages of book", date: Date(), durationSeconds: 3600, icon: icons[1], tags: [tags[3]]),
-            Task(title: "Read 10 pages of book", date: Date(), durationSeconds: 3600, icon: icons[1], tags: [tags[3]]),
-            Task(title: "Read 10 pages of book", date: Date(), durationSeconds: 3600, icon: icons[1], tags: [tags[3]]),
-            Task(title: "Read 10 pages of book", date: Date(), durationSeconds: 3600, icon: icons[1], tags: [tags[3]]),
-            Task(title: "Read 10 pages of book", date: Date(), durationSeconds: 3600, icon: icons[1], tags: [tags[3]]),
-            Task(title: "Read 10 pages of book", date: Date(), durationSeconds: 3600, icon: icons[1], tags: [tags[3]]),
-
+            Task(title: "Read 10 pages of book", date: Date() + 5, durationSeconds: 3600, icon: icons[1], tags: [tags[3]]),
             Task(title: "Learn HTML & CSS", date: Date(), durationSeconds: 10, icon: icons[2], tags: [tags[2]])
         ]
         

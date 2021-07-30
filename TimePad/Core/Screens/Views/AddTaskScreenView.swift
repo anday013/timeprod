@@ -11,7 +11,6 @@ import BottomSheet
 struct AddTaskScreenView: View {
     @StateObject var vm: AddTaskViewModel = AddTaskViewModel()
     @EnvironmentObject var tasksVM: TasksEnvironmentViewModel
-    @State var color: Color = .green
     var columns: [GridItem] = [
         GridItem(.fixed(Size.computeWidth(50))),
         GridItem(.fixed(Size.computeWidth(50))),
@@ -23,6 +22,7 @@ struct AddTaskScreenView: View {
         for _ in 1...(Int(UIScreen.main.bounds.width / Size.computeWidth(50))-4){
             columns.append(GridItem(.fixed(Size.computeWidth(50))))
         }
+        print("INIT: ADD TASK SCREEN")
     }
     var body: some View {
         VStack {
@@ -54,8 +54,11 @@ struct AddTaskScreenView: View {
                         .bold()
                         .font(.title3)
                 ){
-                    TimePickerView(title: "Minutes", value: $vm.durationMinutes, lowerBound: 1, upperBound: 60)
-                        .padding(.bottom, 8)
+                    
+                    CircularMinutePickerView(minutes: $vm.durationMinutes)
+                    .padding(.bottom, 8)
+                    
+                
                     
                     TimeStepperView(title: "Hours", value: $vm.durationHours, lowerBound: 0, upperBound: 24)
                     
@@ -93,7 +96,7 @@ struct AddTaskScreenView: View {
                     .padding(.bottom, 8)
                     
                     NavigationLink(
-                        destination: MultipleSelectionList(items: $tasksVM.tags, selections: $vm.selectedTags, limit: 2),
+                        destination: MultipleSelectionList(items: tasksVM.tags, selections: $vm.selectedTags, limit: 2).navigationTitle("Select Tags"),
                         label: {
                             HStack {
                                 Text("Tags")
@@ -126,6 +129,7 @@ struct AddTaskScreenView: View {
                     Text("Choose an icon...")
                         .bold()
                         .font(.title2)
+
                     LazyVGrid(columns: columns, content: {
                         ForEach(tasksVM.icons, id: \.id) { icon in
                             Button(action: {
@@ -148,6 +152,11 @@ struct AddTaskScreenView: View {
 struct AddTask_Previews: PreviewProvider {
     static var previews: some View {
         Group {
+//            NavigationView {
+//
+//            MultipleSelectionList(items: TasksEnvironmentViewModel().tags, selections: .constant([]), limit: 2)
+//                .navigationTitle("Select Tags")
+//            }
             NavigationView {
                 AddTaskScreenView()
                     .navigationTitle("New Task 🔖")
@@ -165,31 +174,45 @@ struct AddTask_Previews: PreviewProvider {
 
 
 struct MultipleSelectionList: View {
-    @Binding var items: [Tag]
+    var items: [Tag]
     @Binding var selections: [Tag]
+    
+    var columns: [GridItem] = [
+        GridItem(.fixed((UIScreen.main.bounds.width / 4) - 5)),
+        GridItem(.fixed((UIScreen.main.bounds.width / 4) - 5)),
+        GridItem(.fixed((UIScreen.main.bounds.width / 4) - 5)),
+        GridItem(.fixed((UIScreen.main.bounds.width / 4) - 5))
+    ]
     var limit: Int
     
     var body: some View {
-        List {
-            ForEach(self.items, id: \.id) { item in
-                MultipleSelectionRow(tag: item, isSelected: isSelectedTag(selectedTags: self.selections, tag: item)) {
-                    if isSelectedTag(selectedTags: self.selections, tag: item) {
-                        self.selections.removeAll(where: { $0.id == item.id })
-                    }
-                    else if(self.selections.count < limit){
-                        self.selections.append(item)
-                    }
-                    else {
-                        return
+        VStack {
+            LazyVGrid(columns: columns) {
+                ForEach(self.items, id: \.id) { item in
+                    MultipleSelectionRow(tag: item, isSelected: isSelectedTag(selectedTags: self.selections, tag: item)) {
+                        onSelect(item: item)
                     }
                 }
             }
+            Spacer()
         }
     }
     
     func isSelectedTag(selectedTags: [Tag], tag: Tag) -> Bool {
         return selectedTags.contains { tagItem in
             return (tagItem.id == tag.id)
+        }
+    }
+    
+    func onSelect(item: Tag) {
+        if isSelectedTag(selectedTags: self.selections, tag: item) {
+            self.selections.removeAll(where: { $0.id == item.id })
+        }
+        else if(self.selections.count < limit){
+            self.selections.append(item)
+        }
+        else {
+            return
         }
     }
 }

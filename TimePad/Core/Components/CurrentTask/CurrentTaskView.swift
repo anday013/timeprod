@@ -22,8 +22,8 @@ struct CurrentTaskView: View {
         VStack(spacing: 24) {
             HStack {
                 Text(timeline)
-                    .font(.title)
                     .bold()
+                    .font(.title)
                 Spacer()
                 Image(systemName: "chevron.right")
             }

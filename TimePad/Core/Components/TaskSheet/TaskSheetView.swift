@@ -16,12 +16,9 @@ struct TaskSheetView: View {
     private var clockTime: String = formatTime(durationSeconds: 0)
     
     init(task: Task?) {
-        print("INIT: Sheet")
         self.task = task
         self.clockTime = computeClockValue()
         self.progressValue = computeProgressValue()
-        print("ClockTime: \(self.clockTime)")
-        print("ProgressValue: \(self.progressValue)")
     }
     
     var body: some View {

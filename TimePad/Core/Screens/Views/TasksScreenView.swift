@@ -10,9 +10,6 @@ import SwiftUI
 struct TasksScreenView: View {
     @EnvironmentObject var tasksVM: TasksEnvironmentViewModel
 
-    init(){
-        print("INIT: Tasks")
-    }
     var body: some View {
         VStack {
             activeTaskBox
