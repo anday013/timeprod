@@ -13,7 +13,6 @@ struct CurrentTaskView: View {
     private var timeline: String = formatTime(durationSeconds: 0)
     
     init(task: Task?) {
-        print("INIT: CurrentTask")
         self.task = task
         self.timeline = computeTimeline()
     }

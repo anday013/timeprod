@@ -10,12 +10,12 @@ import SwiftUI
 struct CircularMinutePickerView: View {
     @Binding var minutes: Int
     @State private var localMinutes: Int
-    @State var showPicker: Bool = false
+    @Binding var showPicker: Bool
     
-    init(minutes: Binding<Int>) {
+    init(minutes: Binding<Int>, showPicker: Binding<Bool>) {
         self._minutes = minutes
+        self._showPicker = showPicker
         self.localMinutes = minutes.wrappedValue
-        print("self.localMinutes: \(self.localMinutes)")
     }
     
     var body: some View {
@@ -28,24 +28,30 @@ struct CircularMinutePickerView: View {
                 Text("\(localMinutes)")
                     .font(.title2)
                     .foregroundColor(Color.theme.gradientPurple)
-                
-                
+
+
                 Image(systemName: "chevron.right")
                     .font(.subheadline)
                     .foregroundColor(.primary)
-                
+
             }
             .padding()
             .background(Color.theme.accent.cornerRadius(12))
             .onTapGesture {
-                showPicker.toggle()
-            }
-           
-            
+                withAnimation {
+                    showPicker.toggle()
+                }
+            }.blur(radius: showPicker ? 20 : 0)
+
+
             if showPicker {
                 CircularPicker(minutes: $localMinutes, onEnd: self.onEnd)
                     .frame(width: 300, height: 300, alignment: .center)
                     .background(Color.primary.cornerRadius(8))
+                    .blur(radius: 0)
+                    .animation(.easeInOut)
+                    .transition(.scale)
+                    
             }
         }
     }
@@ -142,10 +148,10 @@ struct CircularPicker: View {
 
 struct CircularMinutePickerView_Previews: PreviewProvider {
     static var previews: some View {
-        CircularMinutePickerView(minutes: .constant(0))
+        CircularMinutePickerView(minutes: .constant(0), showPicker: .constant(false))
             .previewLayout(.sizeThatFits)
         
-        CircularMinutePickerView(minutes: .constant(0))
+        CircularMinutePickerView(minutes: .constant(0), showPicker: .constant(false))
             .previewLayout(.sizeThatFits)
             .padding()
             .preferredColorScheme(.dark)

@@ -10,12 +10,17 @@ import Combine
 
 class TasksEnvironmentViewModel: ObservableObject {
     @Published var tasks: [Task] = []
+    @Published var sortedTasks: [Task] = []
     @Published var selectedTask: Task? = nil
     @Published var activeTask: Task? = nil
     @Published var tags: [Tag] = []
     @Published var icons: [Icon] = []
+    
+    @Published var canellables: Set<AnyCancellable> = Set<AnyCancellable>()
+    
     var timer: AnyCancellable?
     var activeTaskListener: AnyCancellable?
+    var tasksSortListener: AnyCancellable?
     
     init() {
         tags = [
@@ -41,34 +46,47 @@ class TasksEnvironmentViewModel: ObservableObject {
         
         setupTimer()
         addTaskSubscriber(taskListener: $activeTask)
+        sortTasks()
     }
     
     private func setupTimer() {
-        timer = Timer
+        Timer
             .publish(every: 1.0, on: .main, in: .common)
             .autoconnect()
             .sink(receiveValue: { [weak self] _tasks in
                 guard let self = self else {return}
                 self.updateActiveTaskTime(seconds: 1)
             })
+            .store(in: &canellables)
+    }
+    
+    private func sortTasks() {
+        $tasks
+            .map({ tasks -> [Task] in
+                return tasks.sorted(by: {$0.date.compare($1.date) == .orderedDescending})
+            })
+            .sink { [weak self] orderedTasks in
+                self?.sortedTasks = orderedTasks
+            }
+            .store(in: &canellables)
     }
     
     // Update tasks array each time when activeTask get updated
     private func addTaskSubscriber(taskListener: Published<Task?>.Publisher) {
-        activeTaskListener = taskListener.map { (task) -> Task? in
-            return task
-        }
-        .sink(receiveValue: { task in
-            guard let task = task else {return}
-            if let activeTaskIndex = self.tasks.firstIndex(where: { $0.id == task.id}) {
-                self.tasks[activeTaskIndex] = task
-            }
-        })
+        taskListener
+            .sink(receiveValue: { [weak self] task in
+                guard let task = task else {return}
+                if let activeTaskIndex = self?.tasks.firstIndex(where: { $0.id == task.id}) {
+                    self?.tasks[activeTaskIndex] = task
+                }
+            })
+            .store(in: &canellables)
+        
     }
     
     private func updateActiveTaskTime(seconds: Int) {
         guard let activeTask = self.activeTask,
-            activeTask.passedSeconds < activeTask.durationSeconds else {return}
+              activeTask.passedSeconds < activeTask.durationSeconds else {return}
         self.activeTask?.passedSeconds += seconds
         guard let selectedTask = self.selectedTask,
               selectedTask.id == self.activeTask?.id else {return}

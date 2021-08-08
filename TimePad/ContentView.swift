@@ -21,7 +21,8 @@ struct ContentView: View {
                     AddTaskScreenView()
                         .navigationTitle("New Task 🔖")
                 case .stats:
-                    Text("Stats")
+                    StatsScreenView()
+                        .navigationTitle("My Productivity 🏃‍♂️")
                 }
             }
             .accentColor(.primary)

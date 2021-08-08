@@ -9,30 +9,31 @@ import SwiftUI
 
 struct TasksScreenView: View {
     @EnvironmentObject var tasksVM: TasksEnvironmentViewModel
-
+    
     var body: some View {
-        VStack {
-            activeTaskBox
-            
-            HStack {
-                Text("Today")
-                    .font(.title)
-                    .bold()
-                Spacer()
+        ScrollView {
+            VStack {
+                activeTaskBox
                 
-                Text("See All")
-                    .font(.title3)
+                HStack {
+                    Text("Today")
+                        .font(.title)
+                        .bold()
+                    Spacer()
+                    
+                }
+                .padding(.top, 32)
+                .padding(.bottom, 16)
+                
+                taskList
             }
-            .padding(.top, 32)
-            .padding(.bottom, 16)
-            
-            taskList
+            .sheet(item: $tasksVM.selectedTask) { task in
+                TaskSheetView(task: task)
+                    .environmentObject(tasksVM.self)
+            }
+            .padding()
         }
-        .sheet(item: $tasksVM.selectedTask) { task in
-            TaskSheetView(task: task)
-                .environmentObject(tasksVM.self)
-        }
-        .padding()
+
         
     }
     
@@ -47,12 +48,14 @@ struct Tasks_Previews: PreviewProvider {
             NavigationView {
                 TasksScreenView()
                     .navigationTitle("Task")
+                    .navigationBarHidden(true)
             }
             
             NavigationView {
                 TasksScreenView()
                     .preferredColorScheme(.dark)
                     .navigationTitle("Task")
+                    .navigationBarHidden(true)
             }
             
         }
@@ -74,14 +77,16 @@ extension TasksScreenView {
     
     private var taskList: some View {
         ScrollView(showsIndicators: false) {
-            ForEach(tasksVM.tasks) { task in
-                Button(action: {
-                    setSelectedTask(task: task)
-                }) {
-                    TaskView(task: task)
-                        .foregroundColor(.primary)
+            LazyVStack {
+                ForEach(tasksVM.sortedTasks) { task in
+                    Button(action: {
+                        setSelectedTask(task: task)
+                    }) {
+                        TaskView(task: task)
+                            .foregroundColor(.primary)
+                    }
+                    
                 }
-                
             }
         }
     }

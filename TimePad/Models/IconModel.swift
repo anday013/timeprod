@@ -9,6 +9,6 @@ import Foundation
 
 struct Icon: Codable, Identifiable {
     var id = UUID().uuidString
-    let imageName: String
+    var imageName: String
     let backgroundColor: String
 }

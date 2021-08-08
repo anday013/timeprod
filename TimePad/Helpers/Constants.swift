@@ -11,4 +11,5 @@ import Foundation
 struct Constants {
     static var secondsInHour = 3600
     static var secondsInMinutes = 60
+    static var frozenTimer = "frozenTimer"
 }

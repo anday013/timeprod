@@ -9,11 +9,16 @@ import SwiftUI
 
 struct TaskView: View {
     let task: Task
-    let formattedTime: String
+    private let formattedTime: String
+    private let hour: Int
+    private let minute: Int
+
     
     init(task: Task) {
         self.task = task
         formattedTime = formatTime(durationSeconds: task.durationSeconds - task.passedSeconds)
+        hour = Calendar.current.component(.hour, from: self.task.date)
+        minute = Calendar.current.component(.minute, from: self.task.date)
     }
     
     var body: some View {
@@ -36,9 +41,12 @@ struct TaskView: View {
             Spacer()
             VStack(alignment: .trailing ,spacing: 8) {
                 Text(formattedTime)
-                Image(systemName: "play.fill")
-                    .foregroundColor(.gray)
-                    .font(.title2)
+                HStack(spacing: 4) {
+                    Text("\(hour):\(minute)")
+                    Image(systemName: "play.fill")
+                        .foregroundColor(.gray)
+                        .font(.title2)
+                }
             }
         }
         .padding()

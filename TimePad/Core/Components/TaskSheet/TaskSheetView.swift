@@ -23,53 +23,16 @@ struct TaskSheetView: View {
     
     var body: some View {
         VStack {
-            RoundedRectangle(cornerRadius: 8)
-                .fill(Color.theme.accent)
-                .frame(width: 40, height: 4)
-                .padding()
+            dragger
             
-            HStack(alignment: .top) {
-                Text(task?.title ?? "")
-                    .bold()
-                    .font(.title)
-                Spacer()
-
-                VStack {
-                    ForEach(task?.tags ?? []) { tag in
-                        TagView(tag: tag)
-                    }
-                }
-            }
-            .padding(8)
+            header
+            
             Spacer()
             
-
-
-            ProgressBarView(progress: progressValue)
-                .overlay(
-                    Text(clockTime)
-                        .font(Font.system(size: Size.computeWidth(40), weight: .bold, design: .default))
-                )
+            progressBar
             Spacer()
 
-            HStack(spacing: Size.computeWidth(95)) {
-                CircleButtonView(action: {
-                    if(tasksVM.activeTask?.id == task?.id){
-                        tasksVM.activeTask = nil
-                    }
-                    else {
-                        tasksVM.activeTask = task
-                    }
-                 }, label: tasksVM.activeTask?.id == task?.id ? "Pause" : "Start") {
-                    Image(systemName: tasksVM.activeTask?.id == task?.id ? "pause.fill" : "play.fill")
-                }
-
-                CircleButtonView(action: {
-
-                }, label: "Done") {
-                    Image(systemName: "checkmark.circle.fill")
-                }
-            }
+            actionButtons
 
             Spacer()
         }
@@ -78,7 +41,6 @@ struct TaskSheetView: View {
     
     func computeClockValue() -> String {
         guard let task = task else { return formatTime(durationSeconds: 0)}
-        print("Compute Clock Value")
         return formatTime(durationSeconds: task.durationSeconds - task.passedSeconds)
     }
     
@@ -88,24 +50,63 @@ struct TaskSheetView: View {
     }
 }
 
-struct ProgressBarView: View {
-    var progress: Float
-    var body: some View {
-        ZStack {
-            Circle()
-                .stroke(lineWidth: 25)
-                .foregroundColor(Color.theme.accent)
-            
-            Circle()
-                .trim(from: 0.0, to: CGFloat(min(self.progress, 1.0)))
-                .stroke(style: StrokeStyle(lineCap: .round, lineJoin: .round))
-                .stroke(RadialGradient(gradient: Gradient(colors: [Color.white, Color.theme.gradientPurple]), center: .topTrailing, startRadius: 10, endRadius: 200), lineWidth: 25)
-                .rotationEffect(Angle(degrees: 270.0))
-                .animation(.linear)
-                
-        }.frame(width: Size.computeWidth(220), height: Size.computeWidth(220))
+
+extension TaskSheetView {
+    private var dragger: some View {
+        RoundedRectangle(cornerRadius: 8)
+            .fill(Color.theme.accent)
+            .frame(width: 40, height: 4)
+            .padding()
+    }
+    
+    private var header: some View {
+        HStack(alignment: .top) {
+            Text(task?.title ?? "")
+                .bold()
+                .font(.title)
+                .lineLimit(2)
+            Spacer()
+
+            VStack {
+                ForEach(task?.tags ?? []) { tag in
+                    TagView(tag: tag)
+                }
+            }
+        }
+        .padding(8)
+
+    }
+    
+    private var progressBar: some View {
+        ProgressBarView(progress: progressValue)
+            .overlay(
+                Text(clockTime)
+                    .font(Font.system(size: Size.computeWidth(40), weight: .bold, design: .default))
+            )
+    }
+    
+    private var actionButtons: some View {
+        HStack(spacing: Size.computeWidth(95)) {
+            CircleButtonView(action: {
+                if(tasksVM.activeTask?.id == task?.id){
+                    tasksVM.activeTask = nil
+                }
+                else {
+                    tasksVM.activeTask = task
+                }
+             }, label: tasksVM.activeTask?.id == task?.id ? "Pause" : "Start") {
+                Image(systemName: tasksVM.activeTask?.id == task?.id ? "pause.fill" : "play.fill")
+            }
+
+            CircleButtonView(action: {
+
+            }, label: "Done") {
+                Image(systemName: "checkmark.circle.fill")
+            }
+        }
     }
 }
+
 
 struct TaskSheetView_Previews: PreviewProvider {
     static var previews: some View {

@@ -16,6 +16,7 @@ class AddTaskViewModel: ObservableObject {
     @Published var selectedTags: [Tag] = []
     @Published var selectedIcon: Icon = Icon(imageName: "monitor", backgroundColor: "9B51E0")
     @Published var showIconPicker: Bool = false
+    @Published var showMinutePicker: Bool = false
     
     init() {
         self.validator()

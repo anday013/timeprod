@@ -20,3 +20,15 @@ func formatTime(durationSeconds: Int) -> String {
     formattedTime.append(seconds < 10 ? "0\(seconds)" : "\(seconds)")
     return formattedTime
 }
+
+func fetchFrozenTimer() -> Date? {
+    return UserDefaults.standard.object(forKey: Constants.frozenTimer) as? Date
+}
+
+func saveFrozenTimer() {
+    UserDefaults.standard.set(Date(), forKey: Constants.frozenTimer)
+}
+
+func removeFrozenTimer() {
+    UserDefaults.standard.removeObject(forKey: Constants.frozenTimer)
+}
