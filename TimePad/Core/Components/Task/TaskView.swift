@@ -17,8 +17,8 @@ struct TaskView: View {
     init(task: Task) {
         self.task = task
         formattedTime = formatTime(durationSeconds: task.durationSeconds - task.passedSeconds)
-        hour = Calendar.current.component(.hour, from: self.task.date)
-        minute = Calendar.current.component(.minute, from: self.task.date)
+        hour = self.task.date.hour
+        minute = self.task.date.minute
     }
     
     var body: some View {

@@ -10,17 +10,13 @@ import Combine
 
 class TasksEnvironmentViewModel: ObservableObject {
     @Published var tasks: [Task] = []
-    @Published var sortedTasks: [Task] = []
+    @Published var todaysTasks: [Task] = []
     @Published var selectedTask: Task? = nil
     @Published var activeTask: Task? = nil
     @Published var tags: [Tag] = []
     @Published var icons: [Icon] = []
     
     @Published var canellables: Set<AnyCancellable> = Set<AnyCancellable>()
-    
-    var timer: AnyCancellable?
-    var activeTaskListener: AnyCancellable?
-    var tasksSortListener: AnyCancellable?
     
     init() {
         tags = [
@@ -38,9 +34,14 @@ class TasksEnvironmentViewModel: ObservableObject {
         ]
         
         
+
         tasks = [
-            Task(title: "Learn IOS", date: Date(), durationSeconds: 7200, icon: icons[0], tags: [tags[0], tags[1]]),
-            Task(title: "Read 10 pages of book", date: Date() + 5, durationSeconds: 3600, icon: icons[1], tags: [tags[3]]),
+            Task(title: "Learn IOS", date: Calendar.current.date(byAdding: .day, value: -6, to: Date()) ?? Date(),durationSeconds: 7200,passedSeconds: 7200, icon: icons[0], tags: []),
+            Task(title: "Learn IOS", date:  Calendar.current.date(byAdding: .day, value: -5, to: Date()) ?? Date(),durationSeconds: 7200,passedSeconds: 7200, icon: icons[0], tags: []),
+            Task(title: "Learn IOS", date:  Calendar.current.date(byAdding: .day, value: -4, to: Date()) ?? Date(),durationSeconds: 7200,passedSeconds: 5000, icon: icons[0], tags: []),
+            Task(title: "Learn IOS", date:  Calendar.current.date(byAdding: .day, value: -3, to: Date()) ?? Date(),durationSeconds: 7200,passedSeconds: 5000, icon: icons[0], tags: []),
+            Task(title: "Learn IOS", date:  Calendar.current.date(byAdding: .day, value: -2, to: Date()) ?? Date(),durationSeconds: 7200,passedSeconds: 5000, icon: icons[0], tags: []),
+            Task(title: "Read 10 pages of book", date: Date() + 5, durationSeconds: 3600, passedSeconds: 3600, icon: icons[1], tags: []),
             Task(title: "Learn HTML & CSS", date: Date(), durationSeconds: 10, icon: icons[2], tags: [tags[2]])
         ]
         
@@ -63,10 +64,10 @@ class TasksEnvironmentViewModel: ObservableObject {
     private func sortTasks() {
         $tasks
             .map({ tasks -> [Task] in
-                return tasks.sorted(by: {$0.date.compare($1.date) == .orderedDescending})
+                return self.filterTodaysTasks(tasks: tasks).sorted(by: {$0.date.compare($1.date) == .orderedDescending})
             })
             .sink { [weak self] orderedTasks in
-                self?.sortedTasks = orderedTasks
+                self?.todaysTasks = orderedTasks
             }
             .store(in: &canellables)
     }
@@ -76,7 +77,7 @@ class TasksEnvironmentViewModel: ObservableObject {
         taskListener
             .sink(receiveValue: { [weak self] task in
                 guard let task = task else {return}
-                if let activeTaskIndex = self?.tasks.firstIndex(where: { $0.id == task.id}) {
+                if let activeTaskIndex = self?.tasks.firstIndex(where: { isEqualTasks($0, task)}) {
                     self?.tasks[activeTaskIndex] = task
                 }
             })
@@ -89,9 +90,30 @@ class TasksEnvironmentViewModel: ObservableObject {
               activeTask.passedSeconds < activeTask.durationSeconds else {return}
         self.activeTask?.passedSeconds += seconds
         guard let selectedTask = self.selectedTask,
-              selectedTask.id == self.activeTask?.id else {return}
+              isEqualTasks(selectedTask, self.activeTask) else {return}
         self.selectedTask?.passedSeconds += seconds
         
+    }
+    
+    
+    private func filterTodaysTasks(tasks: [Task]) -> [Task] {
+        return tasks.filter { task in
+            let currentDate = Date()
+            
+            let today = currentDate.day
+            let currentMonth = currentDate.month
+            let currentYear = currentDate.year
+            
+            let taskDay = task.date.day
+            let taskMonth = task.date.month
+            let taskYear = task.date.year
+
+            if taskDay == today && taskMonth == currentMonth && taskYear == currentYear {
+                return true
+            }
+            return false
+
+        }
     }
     
     

@@ -26,6 +26,10 @@ struct TimePadApp: App {
             guard let startDate = fetchFrozenTimer(),
                   let _ = tasksVM.activeTask else {return}
             tasksVM.activeTask?.passedSeconds -= Int(startDate.timeIntervalSinceNow)
+            
+            if isEqualTasks(tasksVM.activeTask, tasksVM.selectedTask) {
+                tasksVM.selectedTask = tasksVM.activeTask
+            }
         } else if phase == .background {
             guard let _ = tasksVM.activeTask else {
                 removeFrozenTimer()

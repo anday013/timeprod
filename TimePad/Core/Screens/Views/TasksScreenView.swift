@@ -11,30 +11,26 @@ struct TasksScreenView: View {
     @EnvironmentObject var tasksVM: TasksEnvironmentViewModel
     
     var body: some View {
-        ScrollView {
-            VStack {
-                activeTaskBox
+        VStack {
+            activeTaskBox
+            
+            HStack {
+                Text("Today")
+                    .font(.title)
+                    .bold()
+                Spacer()
                 
-                HStack {
-                    Text("Today")
-                        .font(.title)
-                        .bold()
-                    Spacer()
-                    
-                }
-                .padding(.top, 32)
-                .padding(.bottom, 16)
-                
-                taskList
             }
-            .sheet(item: $tasksVM.selectedTask) { task in
-                TaskSheetView(task: task)
-                    .environmentObject(tasksVM.self)
-            }
-            .padding()
+            .padding(.top, 32)
+            .padding(.bottom, 16)
+            
+            taskList
         }
-
-        
+        .sheet(item: $tasksVM.selectedTask) { task in
+            TaskSheetView(task: task)
+                .environmentObject(tasksVM.self)
+        }
+        .padding()
     }
     
     func setSelectedTask(task: Task?) {
@@ -48,15 +44,13 @@ struct Tasks_Previews: PreviewProvider {
             NavigationView {
                 TasksScreenView()
                     .navigationTitle("Task")
-                    .navigationBarHidden(true)
             }
             
-            NavigationView {
-                TasksScreenView()
-                    .preferredColorScheme(.dark)
-                    .navigationTitle("Task")
-                    .navigationBarHidden(true)
-            }
+//            NavigationView {
+//                TasksScreenView()
+//                    .preferredColorScheme(.dark)
+//                    .navigationTitle("Task")
+//            }
             
         }
         .environmentObject(TasksEnvironmentViewModel())
@@ -78,7 +72,7 @@ extension TasksScreenView {
     private var taskList: some View {
         ScrollView(showsIndicators: false) {
             LazyVStack {
-                ForEach(tasksVM.sortedTasks) { task in
+                ForEach(tasksVM.todaysTasks) { task in
                     Button(action: {
                         setSelectedTask(task: task)
                     }) {

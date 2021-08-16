@@ -16,7 +16,7 @@ struct ContentView: View {
                 switch viewRouter.currentPage {
                 case .tasks:
                     TasksScreenView()
-                        .navigationBarHidden(true)
+                        .navigationTitle("Task")
                 case .add:
                     AddTaskScreenView()
                         .navigationTitle("New Task 🔖")

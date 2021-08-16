@@ -34,12 +34,7 @@ struct AddTaskScreenView: View {
                 descriptionSection.blur(radius: vm.showMinutePicker ? 20 : 0)
                 
                 
-                Section {
-                    MainButtonView(action: {
-                        tasksVM.addTask(vm.generateTaks())
-                    }, label: "Create")
-                    
-                }.blur(radius: vm.showMinutePicker ? 20 : 0)
+                submitButtonSection.blur(radius: vm.showMinutePicker ? 20 : 0)
                 
             }
             .bottomSheet(isPresented: $vm.showIconPicker, height: UIScreen.main.bounds.height / 2) {
@@ -58,13 +53,6 @@ struct AddTaskScreenView: View {
 struct AddTask_Previews: PreviewProvider {
     static var previews: some View {
         Group {
-//            NavigationView {
-//
-//            MultipleSelectionList(items: TasksEnvironmentViewModel().tags, selections: .constant([]), limit: 2)
-//                .navigationTitle("Select Tags")
-//            }
-            
-            
             NavigationView {
                 AddTaskScreenView()
                     .navigationTitle("New Task 🔖")
@@ -84,9 +72,13 @@ extension AddTaskScreenView {
         Section {
             TextField("Title", text: $vm.title)
                 .font(.title2)
+                .disableAutocorrection(true)
                 .padding()
-                .background(Color.theme.accent.cornerRadius(12))
+                .background(
+                    RoundedRectangle(cornerRadius: 12, style: .continuous).stroke(vm.isTitleValid ? Color.clear : Color.red, lineWidth: 2).background(Color.theme.accent)
+                )
                 .padding(.bottom, 8)
+            
             
             
             
@@ -111,10 +103,12 @@ extension AddTaskScreenView {
         ){
             
             CircularMinutePickerView(minutes: $vm.durationMinutes, showPicker: $vm.showMinutePicker)
-            .padding(.bottom, 8)            
-        
+                .overlay(validationDurationBorder)
+                .padding(.bottom, 8)
+            
             
             TimeStepperView(title: "Hours", value: $vm.durationHours, lowerBound: 0, upperBound: 24).blur(radius: vm.showMinutePicker ? 20 : 0)
+                .overlay(validationDurationBorder)
             
             
             
@@ -148,7 +142,7 @@ extension AddTaskScreenView {
             .foregroundColor(Color.primary)
             .padding(.bottom, 8)
             
-
+            
             VStack {
                 HStack {
                     Text("Select Tags")
@@ -191,7 +185,7 @@ extension AddTaskScreenView {
             Text("Choose an icon...")
                 .bold()
                 .font(.title2)
-
+            
             LazyVGrid(columns: columns, content: {
                 ForEach(tasksVM.icons, id: \.id) { icon in
                     Button(action: {
@@ -205,6 +199,19 @@ extension AddTaskScreenView {
             
             Spacer()
         }
+    }
+    
+    private var submitButtonSection: some View {
+        Section {
+            MainButtonView(action: {
+                vm.submitForm(tasksVM: tasksVM)
+            }, label: "Create")
+            
+        }.accentColor(Color.theme.accent)
+    }
+    
+    private var validationDurationBorder: some View {
+        RoundedRectangle(cornerRadius: 12, style: .continuous).stroke(vm.isDurationValid ? Color.clear : Color.red, lineWidth: 2)
     }
 }
 

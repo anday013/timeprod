@@ -88,18 +88,18 @@ extension TaskSheetView {
     private var actionButtons: some View {
         HStack(spacing: Size.computeWidth(95)) {
             CircleButtonView(action: {
-                if(tasksVM.activeTask?.id == task?.id){
+                if isEqualTasks(tasksVM.activeTask, task) {
                     tasksVM.activeTask = nil
                 }
                 else {
                     tasksVM.activeTask = task
                 }
-             }, label: tasksVM.activeTask?.id == task?.id ? "Pause" : "Start") {
-                Image(systemName: tasksVM.activeTask?.id == task?.id ? "pause.fill" : "play.fill")
+             }, label: isEqualTasks(tasksVM.activeTask, task) ? "Pause" : "Start") {
+                Image(systemName: isEqualTasks(tasksVM.activeTask, task) ? "pause.fill" : "play.fill")
             }
 
             CircleButtonView(action: {
-
+                // TODO
             }, label: "Done") {
                 Image(systemName: "checkmark.circle.fill")
             }

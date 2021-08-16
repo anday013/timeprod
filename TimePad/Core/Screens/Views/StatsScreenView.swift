@@ -10,32 +10,45 @@ import SwiftUI
 import SwiftUICharts
 
 struct StatsScreenView: View {
+    @EnvironmentObject var tasksVM: TasksEnvironmentViewModel
+    @StateObject private var vm: StatsViewModel = StatsViewModel(tasksVM: nil)
+    
+    init() {
+        UISegmentedControl.appearance().backgroundColor = UIColor(Color.theme.accent)
+    }
+    
     var body: some View {
         ScrollView {
             VStack{
-                
-                panelsView2
-                .padding()
-                
-                LineView(data: [8,23,54,32,12,37,7,23,43], title: "Line chart", style: .init(backgroundColor: Color.theme.accent, accentColor: .theme.gradientPurple, gradientColor: GradientColor(start: .theme.gradientPurple , end: .white), textColor: .primary, legendTextColor: .primary, dropShadowColor: .primary))
+                PanelsView
+                CustomPickerView
+                if vm.selectedTab == .day
+                {
+                    TPBarChartView(data: ChartData(values: vm.generateDailyGraphValues(productiveMinutesPerHour: vm.dailyProductiveMinutes)))
                     .padding()
-
-                
-                
-                
+                }
+                else {
+                    TPBarChartView(data: ChartData(values: generateGraphValues()))
+                    .padding()
+                }
                 Spacer()
-                
-                
             }
         }
+        .onAppear {
+            vm.update(tasksVM: tasksVM)
+        }
         
+    }
+    
+    func generateGraphValues() -> [(String, Int)] {
+        return vm.weeklyCompletedTasks.map({("\($0)", vm.computeProductiveSeconds(tasks: $1))})
     }
 }
 
 
 extension StatsScreenView {
     
-    private var panelsView2: some View {
+    private var PanelsView: some View {
         HStack(spacing: 15) {
             VStack(alignment: .leading) {
                 HStack(spacing: 12) {
@@ -44,12 +57,13 @@ extension StatsScreenView {
                         .frame(width: Size.computeWidth(32), height: Size.computeWidth(32))
                     VStack(alignment: .leading) {
                         Text("Task").lineLimit(1)
+                        
                         Text("Completed").lineLimit(1)
                     }
                     Spacer()
                 }
                 
-                Text("12")
+                Text("\(vm.selectedTab == .day ? vm.dailyCompletedTasks.count : vm.weeklyCompletedTasks.count)")
                     .bold()
                     .font(.largeTitle)
             }
@@ -69,16 +83,16 @@ extension StatsScreenView {
                 }
                 
                 HStack(alignment: .firstTextBaseline, spacing: 0) {
-                    Text("1")
+                    Text("\(Int(floor(Double(vm.productiveSeconds / Constants.secondsInHour))))")
                         .bold()
                         .font(.largeTitle)
                     
                     Text("h ")
                         .font(.title3)
                         .foregroundColor(.primary.opacity(0.6))
-                        
                     
-                    Text("46")
+                    
+                    Text("\(Int((vm.productiveSeconds % Constants.secondsInHour) / Constants.secondsInMinutes))")
                         .bold()
                         .font(.largeTitle)
                     
@@ -90,10 +104,23 @@ extension StatsScreenView {
             .padding()
             .background(Color.theme.primary.cornerRadius(12))
         }
+        .padding()
+    }
+    
+    private var CustomPickerView: some View {
+        Picker("", selection: $vm.selectedTab) {
+            ForEach(StatsTab.allCases, id: \.self) {
+                Text($0.rawValue)
+            }
+        }
+        .frame(width: Size.computeWidth(279 / 1.5))
+        .pickerStyle(SegmentedPickerStyle())
+        .scaledToFit()
+        .scaleEffect(CGSize(width: 1.22, height: 1.22))
+        .padding(.top, 24)
+        .padding(.bottom, 8)
     }
 }
-
-
 
 
 
@@ -102,13 +129,15 @@ struct StatsScreenView_Previews: PreviewProvider {
         NavigationView {
             StatsScreenView()
                 .navigationTitle("My Productivity 🏃‍♂️")
+                .environmentObject(TasksEnvironmentViewModel())
         }
         
-        NavigationView {
-            StatsScreenView()
-                .navigationTitle("My Productivity 🏃‍♂️")
-                .preferredColorScheme(.dark)
-        }
+        //        NavigationView {
+        //            StatsScreenView()
+        //                .navigationTitle("My Productivity 🏃‍♂️")
+        //                .preferredColorScheme(.dark)
+        //                .environmentObject(TasksEnvironmentViewModel())
+        //        }
         
     }
 }
