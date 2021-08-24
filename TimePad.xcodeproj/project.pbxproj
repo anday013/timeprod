@@ -24,6 +24,9 @@
 		2C66BA9A269590B800A188E0 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2C66BA99269590B800A188E0 /* Preview Assets.xcassets */; };
 		2C66BAA72695920200A188E0 /* TasksScreenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C66BAA62695920200A188E0 /* TasksScreenView.swift */; };
 		2C66BAAA2695963E00A188E0 /* Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C66BAA92695963E00A188E0 /* Color.swift */; };
+		2C73946D26CB90BA0061D726 /* TaskDataProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C73946C26CB90BA0061D726 /* TaskDataProvider.swift */; };
+		2C73946F26CB94740061D726 /* CoreDataHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C73946E26CB94740061D726 /* CoreDataHelper.swift */; };
+		2C73947526CBB1580061D726 /* TagDataProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C73947426CBB1580061D726 /* TagDataProvider.swift */; };
 		2C7DFDFD26BC40C400375FED /* ProgressBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C7DFDFC26BC40C400375FED /* ProgressBarView.swift */; };
 		2C85ECFE26A03905002CC21A /* TaskView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C85ECFD26A03905002CC21A /* TaskView.swift */; };
 		2C87263326C3F47700DBBF62 /* StatsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C87263226C3F47700DBBF62 /* StatsViewModel.swift */; };
@@ -68,6 +71,9 @@
 		2C66BA9B269590B800A188E0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		2C66BAA62695920200A188E0 /* TasksScreenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TasksScreenView.swift; sourceTree = "<group>"; };
 		2C66BAA92695963E00A188E0 /* Color.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Color.swift; sourceTree = "<group>"; };
+		2C73946C26CB90BA0061D726 /* TaskDataProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskDataProvider.swift; sourceTree = "<group>"; };
+		2C73946E26CB94740061D726 /* CoreDataHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataHelper.swift; sourceTree = "<group>"; };
+		2C73947426CBB1580061D726 /* TagDataProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagDataProvider.swift; sourceTree = "<group>"; };
 		2C7DFDFC26BC40C400375FED /* ProgressBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressBarView.swift; sourceTree = "<group>"; };
 		2C85ECFD26A03905002CC21A /* TaskView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskView.swift; sourceTree = "<group>"; };
 		2C87263226C3F47700DBBF62 /* StatsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatsViewModel.swift; sourceTree = "<group>"; };
@@ -333,6 +339,8 @@
 			isa = PBXGroup;
 			children = (
 				2C5F465E26B3E462009362B2 /* CoreDataManager.swift */,
+				2C73946C26CB90BA0061D726 /* TaskDataProvider.swift */,
+				2C73947426CBB1580061D726 /* TagDataProvider.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -344,6 +352,7 @@
 				2CD58C6726A3406600803BAF /* TimeHelper.swift */,
 				2CB7234426AF5EA000EA5C6F /* Constants.swift */,
 				2CB76A0626C100BE000E726B /* TaskHelper.swift */,
+				2C73946E26CB94740061D726 /* CoreDataHelper.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -434,6 +443,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				2CB7234526AF5EA000EA5C6F /* Constants.swift in Sources */,
+				2C73946D26CB90BA0061D726 /* TaskDataProvider.swift in Sources */,
 				2CD58C6326A33C2500803BAF /* CurrentTaskView.swift in Sources */,
 				2CE84AC426960D8700F552E0 /* TagModel.swift in Sources */,
 				2C0B76DF26A41A7800FA7CF2 /* MainButtonView.swift in Sources */,
@@ -442,6 +452,7 @@
 				2C345D4626AADFC800C41D9B /* TimeStepperView.swift in Sources */,
 				2C66BA95269590B700A188E0 /* ContentView.swift in Sources */,
 				2C9C50BB26B69BF400417BA2 /* StatsScreenView.swift in Sources */,
+				2C73946F26CB94740061D726 /* CoreDataHelper.swift in Sources */,
 				2C5F466126B3E79C009362B2 /* Test.swift in Sources */,
 				2C7DFDFD26BC40C400375FED /* ProgressBarView.swift in Sources */,
 				2CD58C6626A33F4100803BAF /* TaskSheetView.swift in Sources */,
@@ -464,6 +475,7 @@
 				2C66BA93269590B700A188E0 /* TimePadApp.swift in Sources */,
 				2C65801B26A9AC23006D4055 /* AddTaskScreenView.swift in Sources */,
 				2C85ECFE26A03905002CC21A /* TaskView.swift in Sources */,
+				2C73947526CBB1580061D726 /* TagDataProvider.swift in Sources */,
 				2CF82350269AD2A500D0DFFD /* BottomBarRouter.swift in Sources */,
 				2C5F465F26B3E462009362B2 /* CoreDataManager.swift in Sources */,
 				2CB76A0726C100BE000E726B /* TaskHelper.swift in Sources */,

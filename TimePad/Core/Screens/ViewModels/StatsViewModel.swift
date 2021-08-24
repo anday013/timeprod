@@ -35,7 +35,6 @@ class StatsViewModel: ObservableObject {
         self.weeklyCompletedTasks = self.findWeeklyCompletedTasks(tasks: lastWeekTasks)
         self.updateProductiveSeconds()
         self.dailyProductiveMinutes = self.computeDailyProductiveHoursGraphStats(tasks: self.tasksVM?.todaysTasks ?? [])
-        self.weeklyCompletedTasks = self.findWeeklyCompletedTasks(tasks: self.tasksVM?.tasks ?? [])
     }
     
     private func findDailyCompletedTasks() -> [Task] {
@@ -96,6 +95,19 @@ class StatsViewModel: ObservableObject {
             return task.passedSeconds
         }.reduce(0, +)
     }
+    
+    func countDailyCompletedTasks() -> Int {
+        return self.dailyCompletedTasks.count
+    }
+    
+    func countWeeklyCompletedTasks() -> Int {
+        return self.weeklyCompletedTasks
+            .compactMap { taskTuple -> Int in
+                return taskTuple.1.count
+            }
+            .reduce(0, +)
+    }
+    
     
     func computeDailyProductiveHoursGraphStats(tasks: [Task]) -> [Int] {
         let hoursInDay = 24

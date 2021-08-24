@@ -25,11 +25,15 @@ struct StatsScreenView: View {
                 if vm.selectedTab == .day
                 {
                     TPBarChartView(data: ChartData(values: vm.generateDailyGraphValues(productiveMinutesPerHour: vm.dailyProductiveMinutes)))
-                    .padding()
+                        .padding()
+                        .transition(.move(edge: .trailing))
+                        .animation(.spring())
                 }
                 else {
                     TPBarChartView(data: ChartData(values: generateGraphValues()))
-                    .padding()
+                        .padding()
+                        .transition(.move(edge: .leading))
+                        .animation(.spring())
                 }
                 Spacer()
             }
@@ -62,10 +66,12 @@ extension StatsScreenView {
                     }
                     Spacer()
                 }
-                
-                Text("\(vm.selectedTab == .day ? vm.dailyCompletedTasks.count : vm.weeklyCompletedTasks.count)")
+                let textValue = "\(vm.selectedTab == .day ? vm.countDailyCompletedTasks() : vm.countWeeklyCompletedTasks())"
+                Text(textValue)
                     .bold()
                     .font(.largeTitle)
+                    .transition(.opacity.animation(.easeInOut))
+                    .id("AnimatedTaskText" + textValue)
             }
             .padding()
             .background(Color.theme.primary.cornerRadius(12))
@@ -83,22 +89,32 @@ extension StatsScreenView {
                 }
                 
                 HStack(alignment: .firstTextBaseline, spacing: 0) {
-                    Text("\(Int(floor(Double(vm.productiveSeconds / Constants.secondsInHour))))")
+                    let hourValue = "\(Int(floor(Double(vm.productiveSeconds / Constants.secondsInHour))))"
+                    Text(hourValue)
                         .bold()
                         .font(.largeTitle)
+                        .id("AnimatedHourText" + hourValue)
+                        .transition(.opacity.animation(.easeInOut))
                     
                     Text("h ")
                         .font(.title3)
                         .foregroundColor(.primary.opacity(0.6))
+                        .id("AnimatedHourText" + hourValue)
+                        .transition(.opacity.animation(.easeInOut))
+
                     
-                    
-                    Text("\(Int((vm.productiveSeconds % Constants.secondsInHour) / Constants.secondsInMinutes))")
+                    let minuteValue = "\(Int((vm.productiveSeconds % Constants.secondsInHour) / Constants.secondsInMinutes))"
+                    Text(minuteValue)
                         .bold()
                         .font(.largeTitle)
+                        .id("AnimatedMinuteText" + minuteValue)
+                        .transition(.opacity.animation(.easeInOut))
                     
                     Text("m")
                         .font(.title3)
                         .foregroundColor(.primary.opacity(0.6))
+                        .id("AnimatedMinuteText" + minuteValue)
+                        .transition(.opacity.animation(.easeInOut))
                 }
             }
             .padding()

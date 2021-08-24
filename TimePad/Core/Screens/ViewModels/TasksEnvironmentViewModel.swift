@@ -16,40 +16,42 @@ class TasksEnvironmentViewModel: ObservableObject {
     @Published var tags: [Tag] = []
     @Published var icons: [Icon] = []
     
+    // DATA PROVIDERS
+    let taskDP = TaskDataProvider.instance
+    let tagDP = TagDataProvider.instance
+    
     @Published var canellables: Set<AnyCancellable> = Set<AnyCancellable>()
     
     init() {
-        tags = [
-            Tag(name: "Work", fontColor: "FD5B71"),
-            Tag(name: "Coding", fontColor: "FD5B71"),
-            Tag(name: "Workout", fontColor: "FFA656"),
-            Tag(name: "Reading", fontColor: "07E092"),
-        ]
-        
-        icons = [
-            Icon(imageName: "monitor", backgroundColor: "9B51E0"),
-            Icon(imageName: "book", backgroundColor: "07E092"),
-            Icon(imageName: "code", backgroundColor: "FD5B71")
-            
-        ]
-        
-        
-
-        tasks = [
-            Task(title: "Learn IOS", date: Calendar.current.date(byAdding: .day, value: -6, to: Date()) ?? Date(),durationSeconds: 7200,passedSeconds: 7200, icon: icons[0], tags: []),
-            Task(title: "Learn IOS", date:  Calendar.current.date(byAdding: .day, value: -5, to: Date()) ?? Date(),durationSeconds: 7200,passedSeconds: 7200, icon: icons[0], tags: []),
-            Task(title: "Learn IOS", date:  Calendar.current.date(byAdding: .day, value: -4, to: Date()) ?? Date(),durationSeconds: 7200,passedSeconds: 5000, icon: icons[0], tags: []),
-            Task(title: "Learn IOS", date:  Calendar.current.date(byAdding: .day, value: -3, to: Date()) ?? Date(),durationSeconds: 7200,passedSeconds: 5000, icon: icons[0], tags: []),
-            Task(title: "Learn IOS", date:  Calendar.current.date(byAdding: .day, value: -2, to: Date()) ?? Date(),durationSeconds: 7200,passedSeconds: 5000, icon: icons[0], tags: []),
-            Task(title: "Read 10 pages of book", date: Date() + 5, durationSeconds: 3600, passedSeconds: 3600, icon: icons[1], tags: []),
-            Task(title: "Learn HTML & CSS", date: Date(), durationSeconds: 10, icon: icons[2], tags: [tags[2]])
-        ]
-        
+        icons = Constants.icons
+        _DPListeners()
         setupTimer()
         addTaskSubscriber(taskListener: $activeTask)
         sortTasks()
     }
     
+    // PUBLIC FUNCTIONS
+    func addTask(_ task: Task) {
+        let _ = taskDP.addTask(task: task, allTagEntities: tagDP.getAllTagEntities())
+    }
+    
+    func deleteTask(_ task: Task) {
+        let _ = taskDP.deleteTask(task: task)
+    }
+    
+    func addTag(_ tag: Tag) {
+        let _ = tagDP.addTag(tag: tag)
+    }
+    
+    func deleteTag(_ tag: Tag){
+        let _ = tagDP.deleteTag(tag: tag)
+    }
+    
+    func synchroniseTasks(){
+        tasks.forEach { let _ = taskDP.updateTask(oldTaskId: $0.id, newTask: $0) }
+    }
+    
+    // PRIVATE FUNCS
     private func setupTimer() {
         Timer
             .publish(every: 1.0, on: .main, in: .common)
@@ -58,6 +60,16 @@ class TasksEnvironmentViewModel: ObservableObject {
                 guard let self = self else {return}
                 self.updateActiveTaskTime(seconds: 1)
             })
+            .store(in: &canellables)
+    }
+    
+    private func _DPListeners() {
+        taskDP.$allTasks
+            .combineLatest(tagDP.$allTags)
+            .sink { [weak self] tasks,tags in
+                self?.tasks = tasks
+                self?.tags = tags
+            }
             .store(in: &canellables)
     }
     
@@ -114,11 +126,5 @@ class TasksEnvironmentViewModel: ObservableObject {
             return false
 
         }
-    }
-    
-    
-    // PUBLIC FUNCTIONS
-    func addTask(_ task: Task) {
-        tasks.append(task)
     }
 }

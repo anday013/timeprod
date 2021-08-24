@@ -105,6 +105,9 @@ extension TaskSheetView {
             }
         }
     }
+    func isRunning() -> Bool {
+        return tasksVM.activeTask != nil
+    }
 }
 
 

@@ -22,7 +22,6 @@ struct AddTaskScreenView: View {
         for _ in 1...(Int(UIScreen.main.bounds.width / Size.computeWidth(50))-4){
             columns.append(GridItem(.fixed(Size.computeWidth(50))))
         }
-        
     }
     var body: some View {
         VStack {
@@ -160,10 +159,11 @@ extension AddTaskScreenView {
                 
                 ScrollView(.horizontal, showsIndicators: false) {
                     LazyHStack {
-                        ForEach(tasksVM.tags.filter({ t in
-                            return vm.selectedTags.first(where: {$0.id == t.id}) == nil ? true : false
-                        }), id: \.id) { tag in
-                            
+                        ForEach(tasksVM.tags
+                                    .filter({ t in
+                                        return (vm.selectedTags.first(where: {$0.id == t.id}) == nil)
+                                    }), id: \.id)
+                        { tag in
                             TagView(tag: tag)
                                 .onTapGesture(perform: {addSelectedTag(tag: tag)})
                         }

@@ -36,6 +36,9 @@ struct TimePadApp: App {
                 return
             }
             saveFrozenTimer()
+        } else if phase == .inactive {
+            // SYNCHRONISE CORE DATA
+            tasksVM.synchroniseTasks()
         }
     }
 }
