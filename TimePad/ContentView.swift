@@ -9,6 +9,7 @@ import SwiftUI
 
 struct ContentView: View {
     @EnvironmentObject var viewRouter: BottomBarRouter
+    
     var body: some View {
         VStack{
             Spacer()
@@ -26,6 +27,10 @@ struct ContentView: View {
                 }
             }
             .accentColor(.primary)
+            .onAppear {
+                NotificationManager.instance.requestAuthorization()
+                UIApplication.shared.applicationIconBadgeNumber = 0
+            }
             Spacer()
             BottomBarView()
         }

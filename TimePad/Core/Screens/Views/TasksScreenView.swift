@@ -46,11 +46,11 @@ struct Tasks_Previews: PreviewProvider {
                     .navigationTitle("Task")
             }
             
-//            NavigationView {
-//                TasksScreenView()
-//                    .preferredColorScheme(.dark)
-//                    .navigationTitle("Task")
-//            }
+            //            NavigationView {
+            //                TasksScreenView()
+            //                    .preferredColorScheme(.dark)
+            //                    .navigationTitle("Task")
+            //            }
             
         }
         .environmentObject(TasksEnvironmentViewModel())
@@ -74,7 +74,9 @@ extension TasksScreenView {
             LazyVStack {
                 ForEach(tasksVM.todaysTasks) { task in
                     Button(action: {
-                        setSelectedTask(task: task)
+                        if !isTaskCompleted(task) {
+                            setSelectedTask(task: task)
+                        }
                     }) {
                         TaskView(task: task)
                             .foregroundColor(.primary)

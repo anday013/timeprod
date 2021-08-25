@@ -87,26 +87,71 @@ extension TaskSheetView {
     
     private var actionButtons: some View {
         HStack(spacing: Size.computeWidth(95)) {
-            CircleButtonView(action: {
-                if isEqualTasks(tasksVM.activeTask, task) {
+            let isItActive = isItActiveTask()
+            
+            if isItActive {
+                CircleButtonView(action: {
                     tasksVM.activeTask = nil
+                 }, label: "Pause") {
+                    Image(systemName: "pause.fill")
                 }
-                else {
-                    tasksVM.activeTask = task
+                .transition(.opacity.animation(.easeInOut))
+                .id("AnimatedButton1" + isItActive.description)
+                
+                
+                CircleButtonView(action: {
+                    // ADD CONFIRMATION
+                    completeTask()
+                }, label: "Done") {
+                    Image(systemName: "checkmark.circle.fill")
                 }
-             }, label: isEqualTasks(tasksVM.activeTask, task) ? "Pause" : "Start") {
-                Image(systemName: isEqualTasks(tasksVM.activeTask, task) ? "pause.fill" : "play.fill")
+                .transition(.opacity.animation(.easeInOut))
+                .id("AnimatedButton2" + isItActive.description)
+                
             }
-
-            CircleButtonView(action: {
-                // TODO
-            }, label: "Done") {
-                Image(systemName: "checkmark.circle.fill")
+            else {
+                CircleButtonView(action: {
+                    tasksVM.activeTask = task
+                 }, label: "Start") {
+                    Image(systemName: "play.fill")
+                }
+                .transition(.opacity.animation(.easeInOut))
+                .id("AnimatedButton1" + isItActive.description)
+                
+                CircleButtonView(action: {
+                    // ADD CONFIRMATION
+                    deleteTask()
+                }, label: "Delete") {
+                    Image(systemName: "trash.circle.fill")
+                }
+                .transition(.opacity.animation(.easeInOut))
+                .id("AnimatedButton1" + isItActive.description)
             }
         }
     }
+    
     func isRunning() -> Bool {
         return tasksVM.activeTask != nil
+    }
+    
+    func isItActiveTask() -> Bool {
+        return isEqualTasks(tasksVM.activeTask, self.task)
+    }
+    
+    func completeTask() {
+        guard isItActiveTask() else { return }
+        tasksVM.activeTask?.passedSeconds = tasksVM.activeTask?.durationSeconds ?? tasksVM.activeTask?.passedSeconds ?? 0
+        tasksVM.activeTask = nil
+        tasksVM.selectedTask = nil
+    }
+    
+    func deleteTask() {
+        guard let selectedTask = tasksVM.selectedTask else { return }
+        tasksVM.deleteTask(selectedTask)
+        tasksVM.selectedTask = nil
+        withAnimation {
+            tasksVM.displayHUD(title: "Task deleted", systemImage: "trash.fill")
+        }
     }
 }
 

@@ -52,6 +52,12 @@ struct TaskView: View {
         .padding()
         .background(Color.theme.primary)
         .cornerRadius(12)
+        .opacity(isCompleted() ? 0.5 : 1)
+        
+    }
+    
+    func isCompleted() -> Bool {
+        return task.passedSeconds >= task.durationSeconds
     }
 }
 

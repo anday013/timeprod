@@ -16,9 +16,15 @@ class TasksEnvironmentViewModel: ObservableObject {
     @Published var tags: [Tag] = []
     @Published var icons: [Icon] = []
     
+    // HUD
+    @Published var showHUD: Bool = false
+    @Published var titleHUD: String = ""
+    @Published var systemImageHUD: String = ""
+    
     // DATA PROVIDERS
     let taskDP = TaskDataProvider.instance
     let tagDP = TagDataProvider.instance
+    let notificationManager = NotificationManager.instance
     
     @Published var canellables: Set<AnyCancellable> = Set<AnyCancellable>()
     
@@ -33,6 +39,7 @@ class TasksEnvironmentViewModel: ObservableObject {
     // PUBLIC FUNCTIONS
     func addTask(_ task: Task) {
         let _ = taskDP.addTask(task: task, allTagEntities: tagDP.getAllTagEntities())
+        notificationManager.scheduleTaskNotification(task: task)
     }
     
     func deleteTask(_ task: Task) {
@@ -49,6 +56,12 @@ class TasksEnvironmentViewModel: ObservableObject {
     
     func synchroniseTasks(){
         tasks.forEach { let _ = taskDP.updateTask(oldTaskId: $0.id, newTask: $0) }
+    }
+    
+    func displayHUD(title: String, systemImage: String) {
+        self.showHUD.toggle()
+        self.titleHUD = title
+        self.systemImageHUD = systemImage
     }
     
     // PRIVATE FUNCS

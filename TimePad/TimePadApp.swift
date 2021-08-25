@@ -18,7 +18,9 @@ struct TimePadApp: App {
                 .environmentObject(viewRouter)
                 .environmentObject(tasksVM)
                 .onChange(of: scenePhase, perform: handlePhaseChange)
-                
+                .hud(isPresented: $tasksVM.showHUD) {
+                    Label(tasksVM.titleHUD, systemImage: tasksVM.systemImageHUD)
+                }
         }
     }
     func handlePhaseChange(_ phase: ScenePhase) {

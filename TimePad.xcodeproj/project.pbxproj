@@ -12,6 +12,9 @@
 		2C12F1F826CA691A00D5E448 /* TPBarChartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C12F1F726CA691A00D5E448 /* TPBarChartView.swift */; };
 		2C345D4426AADFB400C41D9B /* TimePickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C345D4326AADFB400C41D9B /* TimePickerView.swift */; };
 		2C345D4626AADFC800C41D9B /* TimeStepperView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C345D4526AADFC800C41D9B /* TimeStepperView.swift */; };
+		2C35996026D4D61300C5D3DA /* NotificationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C35995F26D4D61300C5D3DA /* NotificationManager.swift */; };
+		2C543F1626D54DE800E4AA41 /* View.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C543F1526D54DE800E4AA41 /* View.swift */; };
+		2C543F1926D54E3000E4AA41 /* HUD.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C543F1826D54E3000E4AA41 /* HUD.swift */; };
 		2C59597826B2950E00B2922C /* CircularMinutePickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C59597726B2950E00B2922C /* CircularMinutePickerView.swift */; };
 		2C5F465D26B3E1B5009362B2 /* TasksContainer.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 2C5F465B26B3E1B5009362B2 /* TasksContainer.xcdatamodeld */; };
 		2C5F465F26B3E462009362B2 /* CoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C5F465E26B3E462009362B2 /* CoreDataManager.swift */; };
@@ -57,6 +60,9 @@
 		2C12F1F726CA691A00D5E448 /* TPBarChartView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TPBarChartView.swift; sourceTree = "<group>"; };
 		2C345D4326AADFB400C41D9B /* TimePickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimePickerView.swift; sourceTree = "<group>"; };
 		2C345D4526AADFC800C41D9B /* TimeStepperView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeStepperView.swift; sourceTree = "<group>"; };
+		2C35995F26D4D61300C5D3DA /* NotificationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationManager.swift; sourceTree = "<group>"; };
+		2C543F1526D54DE800E4AA41 /* View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = View.swift; sourceTree = "<group>"; };
+		2C543F1826D54E3000E4AA41 /* HUD.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HUD.swift; sourceTree = "<group>"; };
 		2C59597726B2950E00B2922C /* CircularMinutePickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CircularMinutePickerView.swift; sourceTree = "<group>"; };
 		2C5F465C26B3E1B5009362B2 /* TasksContainer.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = TasksContainer.xcdatamodel; sourceTree = "<group>"; };
 		2C5F465E26B3E462009362B2 /* CoreDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataManager.swift; sourceTree = "<group>"; };
@@ -143,6 +149,14 @@
 			path = TimePicker;
 			sourceTree = "<group>";
 		};
+		2C543F1726D54E1E00E4AA41 /* HUD */ = {
+			isa = PBXGroup;
+			children = (
+				2C543F1826D54E3000E4AA41 /* HUD.swift */,
+			);
+			path = HUD;
+			sourceTree = "<group>";
+		};
 		2C59597626B294B600B2922C /* CircularMinutePicker */ = {
 			isa = PBXGroup;
 			children = (
@@ -225,6 +239,8 @@
 		2C66BAA42695912E00A188E0 /* Components */ = {
 			isa = PBXGroup;
 			children = (
+				2C543F1726D54E1E00E4AA41 /* HUD */,
+				2CD58C6426A33F0600803BAF /* TaskSheet */,
 				2C12F1F626CA68BA00D5E448 /* TPBarChartView */,
 				2C7DFDFB26BC40AD00375FED /* ProgressBar */,
 				2CF17DCB26AD6B1600F30C72 /* Icon */,
@@ -234,7 +250,6 @@
 				2CD58C6926A341C800803BAF /* Tag */,
 				2C85ECFC26A038F4002CC21A /* Task */,
 				2C93130126A187E6004D269E /* CurrentTask */,
-				2CD58C6426A33F0600803BAF /* TaskSheet */,
 				2CE84AC726961FD700F552E0 /* BottomBar */,
 			);
 			path = Components;
@@ -255,6 +270,7 @@
 				2C66BAA92695963E00A188E0 /* Color.swift */,
 				2C0B76E026A425D900FA7CF2 /* PreviewProvider.swift */,
 				2C9ABFC526C8DD5000B83F10 /* Date.swift */,
+				2C543F1526D54DE800E4AA41 /* View.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -341,6 +357,7 @@
 				2C5F465E26B3E462009362B2 /* CoreDataManager.swift */,
 				2C73946C26CB90BA0061D726 /* TaskDataProvider.swift */,
 				2C73947426CBB1580061D726 /* TagDataProvider.swift */,
+				2C35995F26D4D61300C5D3DA /* NotificationManager.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -448,6 +465,7 @@
 				2CE84AC426960D8700F552E0 /* TagModel.swift in Sources */,
 				2C0B76DF26A41A7800FA7CF2 /* MainButtonView.swift in Sources */,
 				2CE84ACD269625C400F552E0 /* SizeHelper.swift in Sources */,
+				2C35996026D4D61300C5D3DA /* NotificationManager.swift in Sources */,
 				2CD58C6F26A3551200803BAF /* CircleButtonView.swift in Sources */,
 				2C345D4626AADFC800C41D9B /* TimeStepperView.swift in Sources */,
 				2C66BA95269590B700A188E0 /* ContentView.swift in Sources */,
@@ -473,9 +491,11 @@
 				2CD58C6826A3406600803BAF /* TimeHelper.swift in Sources */,
 				2C5F465D26B3E1B5009362B2 /* TasksContainer.xcdatamodeld in Sources */,
 				2C66BA93269590B700A188E0 /* TimePadApp.swift in Sources */,
+				2C543F1626D54DE800E4AA41 /* View.swift in Sources */,
 				2C65801B26A9AC23006D4055 /* AddTaskScreenView.swift in Sources */,
 				2C85ECFE26A03905002CC21A /* TaskView.swift in Sources */,
 				2C73947526CBB1580061D726 /* TagDataProvider.swift in Sources */,
+				2C543F1926D54E3000E4AA41 /* HUD.swift in Sources */,
 				2CF82350269AD2A500D0DFFD /* BottomBarRouter.swift in Sources */,
 				2C5F465F26B3E462009362B2 /* CoreDataManager.swift in Sources */,
 				2CB76A0726C100BE000E726B /* TaskHelper.swift in Sources */,

@@ -13,38 +13,35 @@ struct BottomBarView: View {
     private let plusSize = Size.computeWidth(24)
     private let plusCircleSize = Size.computeWidth(44)
     var body: some View {
-        VStack {
-            HStack {
-                BarIcon(name: "tasks_icon", size: iconSize)
-                    .foregroundColor(viewRouter.currentPage == .tasks ? .primary : .gray)
-                    .onTapGesture {
-                        viewRouter.currentPage = .tasks
-                    }
-                
-                Spacer()
-                
-                BarIcon(name: "plus_icon", size: plusSize)
-                    .foregroundColor(Color(UIColor.systemBackground))
-                    .background(
-                       plusCircle
-                    )
-                    .onTapGesture {
-                        viewRouter.currentPage = .add
-                    }
-                
-                Spacer()
-                
-                BarIcon(name: "stats_icon", size: iconSize)
-                    .foregroundColor(viewRouter.currentPage == .stats ? .primary : .gray)
-                    .onTapGesture {
-                        viewRouter.currentPage = .stats
-                    }
-                
-                
-            }
-            .frame(width: UIScreen.main.bounds.width * 0.79, height: UIScreen.main.bounds.height / 8 )
+        HStack {
+            BarIcon(name: "tasks_icon", size: iconSize)
+                .foregroundColor(viewRouter.currentPage == .tasks ? .primary : .gray)
+                .onTapGesture {
+                    viewRouter.currentPage = .tasks
+                }
+            
+            Spacer()
+            
+            BarIcon(name: "plus_icon", size: plusSize)
+                .foregroundColor(Color(UIColor.systemBackground))
+                .background(
+                    plusCircle
+                )
+                .onTapGesture {
+                    viewRouter.currentPage = .add
+                }
+            
+            Spacer()
+            
+            BarIcon(name: "stats_icon", size: iconSize)
+                .foregroundColor(viewRouter.currentPage == .stats ? .primary : .gray)
+                .onTapGesture {
+                    viewRouter.currentPage = .stats
+                }
+            
             
         }
+        .frame(width: UIScreen.main.bounds.width * 0.79, height: UIScreen.main.bounds.height / 12 )
     }
 }
 
